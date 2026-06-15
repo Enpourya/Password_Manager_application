@@ -57,7 +57,9 @@ The application uses a two-tier security approach:
 ### Encryption Flow
 
 User Password → xXxXxXxXxXx (100,000 iterations) → 32-byte Key → Fernet Encryption
+
 ↓
+
 Encrypted Data
 Stored in SQLite
 

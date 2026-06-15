@@ -55,3 +55,42 @@ The application uses a two-tier security approach:
 2. **Data Encryption**: A separate encryption key is derived from the user's master password using PBKDF2HMAC with SHA-256 and 100,000 iterations. This key is used to encrypt all stored password data using the Fernet protocol.
 
 ### Encryption Flow
+
+User Password → xXxXxXxXxXx (100,000 iterations) → 32-byte Key → Fernet Encryption
+↓
+Encrypted Data
+Stored in SQLite
+
+
+### Database Schema
+```sql
+-- Users Table (Authentication Data)
+users (
+    id INTEGER PRIMARY KEY,
+    username_hash TEXT,     -- SHA-256 hashed username
+    password_hash TEXT,     -- SHA-256 hashed password
+    recovery_key_hash TEXT, -- SHA-256 hashed recovery phrase
+    salt TEXT,              -- Authentication salt
+    encryption_salt BLOB    -- Encryption salt (separate from auth salt)
+)
+
+-- Passwords Table (Encrypted Data)
+passwords (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER,        -- Foreign key to users table
+    title_encrypted BLOB,   -- Fernet encrypted title
+    username_encrypted BLOB,-- Fernet encrypted username
+    password_encrypted BLOB,-- Fernet encrypted password
+    description_encrypted BLOB, -- Fernet encrypted description
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+)
+```
+
+
+# Clone the repository (if using git)
+```bash
+
+git clone <repository-url>
+cd password-manager
+```

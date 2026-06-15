@@ -61,6 +61,7 @@ User Password → xXxXxXxXxXx (100,000 iterations) → 32-byte Key → Fernet En
 ↓
 
 Encrypted Data
+
 Stored in SQLite
 
 
